@@ -22,6 +22,7 @@ import { Dashboard } from './components/Dashboard';
 import { Research } from './components/Research';
 import { Features } from './components/Features';
 import { Models } from './components/Models';
+import { Policy } from './components/Policy';
 import { fetchChatResponse } from './services/api'; // UPDATED IMPORT
 
 // Utility for class merging
@@ -173,15 +174,7 @@ const App: React.FC = () => {
           )}
 
           {currentPage === 'models' && <div className="p-4 sm:p-6 lg:p-8"><Models /></div>}
-          {currentPage === 'policy' && (
-            <div className="flex items-center justify-center h-full text-muted-foreground">
-              <div className="text-center">
-                <Scale size={48} className="mx-auto mb-4 opacity-50" />
-                <h2 className="text-2xl font-bold">Policy Module</h2>
-                <p>Under Development</p>
-              </div>
-            </div>
-          )}
+          {currentPage === 'policy' && <div className="p-4 sm:p-6 lg:p-8"><Policy /></div>}
           {currentPage === 'settings' && (
             <div className="flex items-center justify-center h-full text-muted-foreground">
               <div className="text-center">
