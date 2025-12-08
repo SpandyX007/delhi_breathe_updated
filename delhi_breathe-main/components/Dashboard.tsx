@@ -17,10 +17,10 @@ function cn(...inputs: ClassValue[]) {
 // Reusable Components
 const Card = ({ children, className }: { children: React.ReactNode, className?: string }) => (
   <div className={cn(
-    "bg-card text-card-foreground rounded-xl border border-border shadow-sm",
-    // Depth effect: Light top border, dark bottom shadow
-    "shadow-[0_2px_10px_-2px_rgba(0,0,0,0.1)] dark:shadow-[0_2px_15px_-3px_rgba(0,0,0,0.4)]",
-    "ring-1 ring-white/20 dark:ring-white/5",
+    "bg-card text-card-foreground rounded-xl border border-border/50",
+    "shadow-lg shadow-slate-200/50 dark:shadow-slate-950/50",
+    "hover:shadow-xl transition-shadow duration-300",
+    "backdrop-blur-sm",
     className
   )}>
     {children}
@@ -39,7 +39,7 @@ const ControlSelect = ({ label, value, options, onChange, multiple = false }: an
           onChange(e.target.value);
         }
       }}
-      className="bg-muted/30 border border-input rounded text-sm p-1.5 focus:ring-1 focus:ring-accent outline-none"
+      className="bg-card border border-border rounded-lg text-sm p-2 focus:ring-2 focus:ring-accent/50 outline-none transition-all shadow-sm hover:shadow"
     >
       {options.map((opt: any) => (
         <option key={opt.value || opt} value={opt.value || opt}>
@@ -146,11 +146,11 @@ export const Dashboard: React.FC = () => {
       </Card>
 
       {/* 2. Controls Toolbar (Sticky) */}
-      <div className="sticky top-0 z-10 p-4 bg-background/80 backdrop-blur-md border-b border-border -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 flex flex-wrap gap-4 items-end shadow-sm">
+      <div className="sticky top-0 z-10 p-4 bg-card/95 backdrop-blur-md border-b border-border/50 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 flex flex-wrap gap-4 items-end shadow-lg">
         <div className="flex flex-col gap-1">
           <label className="text-[10px] uppercase font-bold text-muted-foreground">Range</label>
-          <div className="flex items-center gap-2 bg-muted/30 border border-input rounded p-1">
-            <Calendar size={14} className="text-muted-foreground ml-1" />
+          <div className="flex items-center gap-2 bg-card border border-border rounded-lg p-2 shadow-sm hover:shadow transition-shadow">
+            <Calendar size={14} className="text-accent ml-1" />
             <input type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} className="bg-transparent text-sm w-24 outline-none" />
             <span className="text-muted-foreground">-</span>
             <input type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} className="bg-transparent text-sm w-24 outline-none" />
@@ -193,20 +193,20 @@ export const Dashboard: React.FC = () => {
           onChange={(val: string) => setSelectedModels([val])}
         />
 
-        <button className="ml-auto bg-accent hover:bg-accent/90 text-accent-foreground px-4 py-1.5 rounded text-sm font-medium shadow-lg shadow-accent/20 transition-all flex items-center gap-2">
+        <button className="ml-auto bg-gradient-to-r from-accent to-teal-600 hover:shadow-xl text-white px-5 py-2.5 rounded-lg text-sm font-semibold shadow-lg transition-all flex items-center gap-2 hover:scale-105 active:scale-95">
           <RefreshCcw size={14} className={loadingData ? "animate-spin" : ""} /> Update Forecasts
         </button>
       </div>
 
       {/* 3. Forecast Charts */}
       {/* Chart 1: NO2 */}
-      <Card className="p-4 flex flex-col gap-4">
+      <Card className="p-6 flex flex-col gap-4">
         <div className="flex justify-between items-center">
-          <h3 className="font-semibold text-lg flex items-center gap-2">
-            <span className="w-2 h-6 bg-blue-500 rounded-sm"></span>
+          <h3 className="font-semibold text-lg flex items-center gap-3">
+            <span className="w-1.5 h-8 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full shadow-sm"></span>
             NO2 Concentration Forecast (µg/m³)
           </h3>
-          <span className="text-xs font-mono text-muted-foreground bg-muted px-2 py-1 rounded">Model: {MODELS.find(m => m.id === selectedModels[0])?.name}</span>
+          <span className="text-xs font-mono text-muted-foreground bg-secondary px-3 py-1.5 rounded-lg border border-border/50 shadow-sm">Model: {MODELS.find(m => m.id === selectedModels[0])?.name}</span>
         </div>
         <div className="h-[300px] w-full">
           {loadingData ? (
@@ -238,13 +238,13 @@ export const Dashboard: React.FC = () => {
       </Card>
 
       {/* Chart 2: O3 */}
-      <Card className="p-4 flex flex-col gap-4">
+      <Card className="p-6 flex flex-col gap-4">
         <div className="flex justify-between items-center">
-          <h3 className="font-semibold text-lg flex items-center gap-2">
-            <span className="w-2 h-6 bg-emerald-500 rounded-sm"></span>
+          <h3 className="font-semibold text-lg flex items-center gap-3">
+            <span className="w-1.5 h-8 bg-gradient-to-b from-emerald-500 to-emerald-600 rounded-full shadow-sm"></span>
             O3 Concentration Forecast (µg/m³)
           </h3>
-          <span className="text-xs font-mono text-muted-foreground bg-muted px-2 py-1 rounded">Model: {MODELS.find(m => m.id === selectedModels[0])?.name}</span>
+          <span className="text-xs font-mono text-muted-foreground bg-secondary px-3 py-1.5 rounded-lg border border-border/50 shadow-sm">Model: {MODELS.find(m => m.id === selectedModels[0])?.name}</span>
         </div>
         <div className="h-[300px] w-full">
           {loadingData ? (
@@ -275,12 +275,12 @@ export const Dashboard: React.FC = () => {
       </Card>
 
       {/* 4. Analysis Box */}
-      <Card className="p-6 bg-gradient-to-br from-card to-accent/5 border-l-4 border-l-accent">
+      <Card className="p-6 bg-gradient-to-br from-card via-card to-accent/5 border-l-4 border-l-accent shadow-xl">
         <div className="flex items-center gap-3 mb-4">
-          <div className="p-2 bg-accent/20 rounded-full text-accent">
+          <div className="p-3 bg-gradient-to-br from-accent to-teal-600 rounded-xl text-white shadow-lg">
             <BrainCircuit size={24} />
           </div>
-          <h3 className="text-xl font-bold">AI Insight & Analysis</h3>
+          <h3 className="text-xl font-bold bg-gradient-to-r from-foreground to-accent bg-clip-text text-transparent">AI Insight & Analysis</h3>
         </div>
         <div className="prose dark:prose-invert prose-sm max-w-none">
           {analysis === "Loading analysis..." || analysis === "Analyzing forecast data..." ? (
@@ -289,7 +289,7 @@ export const Dashboard: React.FC = () => {
               Thinking...
             </div>
           ) : (
-            <div dangerouslySetInnerHTML={{ __html: analysis.replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
+            <div className="leading-relaxed" dangerouslySetInnerHTML={{ __html: analysis.replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
           )}
         </div>
       </Card>
