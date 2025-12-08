@@ -22,46 +22,46 @@ function cn(...inputs: ClassValue[]) {
 
 const NODE_VISUALS: Record<NodeType, { color: string, icon: React.ReactNode, border: string, bg: string }> = {
   source: {
-    color: 'text-blue-500',
+    color: 'text-sky-600',
     icon: <Database size={16} />,
-    border: 'border-blue-500/50',
-    bg: 'bg-blue-500/10'
+    border: 'border-sky-500/50',
+    bg: 'bg-sky-500/10'
   },
   cleaning: {
-    color: 'text-teal-500',
+    color: 'text-teal-600',
     icon: <Eraser size={16} />,
     border: 'border-teal-500/50',
     bg: 'bg-teal-500/10'
   },
   transform: {
-    color: 'text-amber-500',
+    color: 'text-amber-600',
     icon: <FunctionSquare size={16} />,
     border: 'border-amber-500/50',
     bg: 'bg-amber-500/10'
   },
   temporal: {
-    color: 'text-orange-500',
+    color: 'text-orange-600',
     icon: <Clock size={16} />,
     border: 'border-orange-500/50',
     bg: 'bg-orange-500/10'
   },
   aggregation: {
-    color: 'text-purple-500',
+    color: 'text-rose-600',
     icon: <Layers size={16} />,
-    border: 'border-purple-500/50',
-    bg: 'bg-purple-500/10'
+    border: 'border-rose-500/50',
+    bg: 'bg-rose-500/10'
   },
   model: {
-    color: 'text-violet-500',
+    color: 'text-blue-600',
     icon: <Cpu size={16} />,
-    border: 'border-violet-500/50',
-    bg: 'bg-violet-500/10'
+    border: 'border-blue-500/50',
+    bg: 'bg-blue-500/10'
   },
   output: {
-    color: 'text-green-500',
+    color: 'text-emerald-600',
     icon: <Target size={16} />,
-    border: 'border-green-500/50',
-    bg: 'bg-green-500/10'
+    border: 'border-emerald-500/50',
+    bg: 'bg-emerald-500/10'
   },
 };
 
@@ -478,10 +478,10 @@ export const Features: React.FC<FeaturesProps> = ({
               <div
                 key={node.id}
                 className={cn(
-                  "node-element absolute w-[220px] rounded-lg border-2 shadow-lg bg-card transition-shadow duration-200 group",
+                  "node-element absolute w-[220px] rounded-xl border-2 shadow-xl bg-card transition-all duration-200 group",
                   visual.border, visual.bg,
-                  selectedNode?.id === node.id ? "ring-2 ring-primary shadow-2xl" : "hover:shadow-xl",
-                  isDraggingNode === node.id ? "cursor-grabbing scale-105 z-50" : "cursor-grab z-10"
+                  selectedNode?.id === node.id ? "ring-2 ring-accent shadow-2xl scale-105" : "hover:shadow-2xl hover:scale-[1.02]",
+                  isDraggingNode === node.id ? "cursor-grabbing scale-105 z-50 shadow-2xl" : "cursor-grab z-10"
                 )}
                 style={{ left: node.position.x, top: node.position.y }}
                 onMouseDown={(e) => {
@@ -532,17 +532,17 @@ export const Features: React.FC<FeaturesProps> = ({
       </div>
 
       {/* Controls */}
-      <div className="absolute bottom-6 left-6 z-20 flex gap-2">
+      <div className="absolute bottom-6 left-6 z-20 flex gap-3">
         {/* Zoom */}
-        <div className="bg-card/90 backdrop-blur border border-border p-1.5 rounded-lg shadow-lg flex items-center gap-1">
-          <button className="p-2 hover:bg-muted rounded text-muted-foreground" onClick={() => setViewport(v => ({ ...v, zoom: v.zoom + 0.1 }))}><ZoomIn size={18} /></button>
-          <span className="text-[10px] text-muted-foreground w-8 text-center">{Math.round(viewport.zoom * 100)}%</span>
-          <button className="p-2 hover:bg-muted rounded text-muted-foreground" onClick={() => setViewport(v => ({ ...v, zoom: v.zoom - 0.1 }))}><ZoomOut size={18} /></button>
-          <div className="w-px h-4 bg-border mx-1" />
-          <button className="p-2 hover:bg-muted rounded text-muted-foreground" onClick={() => setViewport({ x: 0, y: 0, zoom: 1 })}><Maximize size={18} /></button>
-          <div className="w-px h-4 bg-border mx-1" />
+        <div className="bg-card/95 backdrop-blur border border-border/50 p-2 rounded-xl shadow-xl flex items-center gap-1">
+          <button className="p-2 hover:bg-accent/10 hover:text-accent rounded-lg text-muted-foreground transition-colors" onClick={() => setViewport(v => ({ ...v, zoom: v.zoom + 0.1 }))}><ZoomIn size={18} /></button>
+          <span className="text-[10px] text-muted-foreground font-semibold w-10 text-center">{Math.round(viewport.zoom * 100)}%</span>
+          <button className="p-2 hover:bg-accent/10 hover:text-accent rounded-lg text-muted-foreground transition-colors" onClick={() => setViewport(v => ({ ...v, zoom: v.zoom - 0.1 }))}><ZoomOut size={18} /></button>
+          <div className="w-px h-6 bg-border mx-1" />
+          <button className="p-2 hover:bg-accent/10 hover:text-accent rounded-lg text-muted-foreground transition-colors" onClick={() => setViewport({ x: 0, y: 0, zoom: 1 })}><Maximize size={18} /></button>
+          <div className="w-px h-6 bg-border mx-1" />
           <button
-            className={cn("p-2 hover:bg-muted rounded text-muted-foreground", isFullScreen && "text-accent bg-accent/10")}
+            className={cn("p-2 rounded-lg transition-colors", isFullScreen ? "text-accent bg-accent/15" : "hover:bg-accent/10 hover:text-accent text-muted-foreground")}
             onClick={onToggleFullScreen}
           >
             {isFullScreen ? <Minimize size={18} /> : <Maximize size={18} />}
@@ -550,22 +550,24 @@ export const Features: React.FC<FeaturesProps> = ({
         </div>
 
         {/* History & Clear */}
-        <div className="bg-card/90 backdrop-blur border border-border p-1.5 rounded-lg shadow-lg flex items-center gap-1">
+        <div className="bg-card/95 backdrop-blur border border-border/50 p-2 rounded-xl shadow-xl flex items-center gap-1">
           <button
-            className={cn("p-2 rounded transition-colors", historyIndex > 0 ? "hover:bg-muted text-foreground" : "text-muted-foreground opacity-50")}
+            className={cn("p-2 rounded-lg transition-colors", historyIndex > 0 ? "hover:bg-accent/10 hover:text-accent text-foreground" : "text-muted-foreground opacity-40 cursor-not-allowed")}
             onClick={handleUndo}
+            disabled={historyIndex === 0}
           >
             <Undo2 size={18} />
           </button>
           <button
-            className={cn("p-2 rounded transition-colors", historyIndex < history.length - 1 ? "hover:bg-muted text-foreground" : "text-muted-foreground opacity-50")}
+            className={cn("p-2 rounded-lg transition-colors", historyIndex < history.length - 1 ? "hover:bg-accent/10 hover:text-accent text-foreground" : "text-muted-foreground opacity-40 cursor-not-allowed")}
             onClick={handleRedo}
+            disabled={historyIndex >= history.length - 1}
           >
             <Redo2 size={18} />
           </button>
-          <div className="w-px h-4 bg-border mx-1" />
+          <div className="w-px h-6 bg-border mx-1" />
           <button
-            className="p-2 hover:bg-destructive/10 text-destructive rounded transition-colors"
+            className="p-2 hover:bg-destructive/15 hover:text-destructive text-muted-foreground rounded-lg transition-colors"
             title="Clear Canvas"
             onClick={handleClearCanvas}
           >
@@ -578,7 +580,7 @@ export const Features: React.FC<FeaturesProps> = ({
       <div className="absolute top-6 right-6 z-20">
         <button
           onClick={() => fileInputRef.current?.click()}
-          className="bg-accent hover:bg-accent/90 text-accent-foreground px-4 py-2 rounded-lg shadow-xl shadow-accent/20 font-medium flex items-center gap-2 transition-all hover:scale-105"
+          className="bg-gradient-to-r from-accent to-teal-600 hover:shadow-2xl text-white px-5 py-2.5 rounded-lg shadow-xl font-semibold flex items-center gap-2 transition-all hover:scale-105 active:scale-95"
         >
           <Database size={18} /> Upload Data
         </button>

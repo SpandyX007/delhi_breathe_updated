@@ -104,9 +104,9 @@ const App: React.FC = () => {
     <button
       onClick={() => setCurrentPage(page)}
       className={cn(
-        "flex items-center w-full p-3 mb-2 rounded-lg transition-all duration-200",
+        "flex items-center w-full p-3 mb-1.5 rounded-lg transition-all duration-200",
         "hover:bg-accent/10 hover:text-accent",
-        currentPage === page ? "bg-accent/20 text-accent border-r-2 border-accent" : "text-muted-foreground"
+        currentPage === page ? "bg-accent/15 text-accent font-semibold shadow-sm" : "text-muted-foreground hover:shadow-sm"
       )}
     >
       <Icon size={20} />
@@ -123,14 +123,14 @@ const App: React.FC = () => {
           isFullScreen ? "w-0 border-none overflow-hidden" : (isSidebarOpen ? "w-64" : "w-16")
         )}
       >
-        <div className="flex items-center justify-between p-4 border-b border-border h-16">
+        <div className="flex items-center justify-between p-4 border-b border-border h-16 bg-gradient-to-r from-card to-secondary/30">
           <div className="flex items-center gap-2 overflow-hidden">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-600 to-cyan-400 shrink-0 shadow-lg flex items-center justify-center text-white font-bold text-xs">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-accent to-teal-600 shrink-0 shadow-lg flex items-center justify-center text-white font-bold text-xs">
               AA
             </div>
-            {isSidebarOpen && <h1 className="font-bold text-lg tracking-tight truncate">AeroAnalytica</h1>}
+            {isSidebarOpen && <h1 className="font-bold text-lg tracking-tight truncate bg-gradient-to-r from-foreground to-accent bg-clip-text text-transparent">AeroAnalytica</h1>}
           </div>
-          <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-1 hover:bg-muted rounded text-muted-foreground">
+          <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-1.5 hover:bg-muted rounded-lg text-muted-foreground transition-colors">
             {isSidebarOpen ? <ChevronLeft size={16} /> : <Menu size={16} />}
           </button>
         </div>
@@ -144,13 +144,13 @@ const App: React.FC = () => {
           <SidebarItem page="settings" icon={Settings} label="Settings" />
         </nav>
 
-        <div className="p-4 border-t border-border">
+        <div className="p-4 border-t border-border bg-gradient-to-r from-card to-secondary/30">
           <button
             onClick={toggleTheme}
-            className="flex items-center justify-center w-full p-2 rounded-lg hover:bg-muted text-muted-foreground transition-colors"
+            className="flex items-center justify-center w-full p-2.5 rounded-lg hover:bg-accent/10 hover:text-accent text-muted-foreground transition-all shadow-sm hover:shadow"
           >
             {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-            {isSidebarOpen && <span className="ml-2 text-sm">{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>}
+            {isSidebarOpen && <span className="ml-2 text-sm font-medium">{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>}
           </button>
         </div>
       </aside>
@@ -194,14 +194,16 @@ const App: React.FC = () => {
           isFullScreen ? "w-0 border-none overflow-hidden" : (isChatOpen ? "w-80" : "w-12")
         )}
       >
-        <div className="flex items-center justify-between p-4 border-b border-border h-16 bg-card">
+        <div className="flex items-center justify-between p-4 border-b border-border h-16 bg-gradient-to-r from-card to-secondary/30">
           {isChatOpen && (
             <div className="flex items-center gap-2">
-              <Bot size={18} className="text-accent" />
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-accent to-teal-600 flex items-center justify-center shadow-sm">
+                <Bot size={16} className="text-white" />
+              </div>
               <span className="font-semibold text-sm">Gemini Assistant</span>
             </div>
           )}
-          <button onClick={() => setIsChatOpen(!isChatOpen)} className="p-1 hover:bg-muted rounded text-muted-foreground ml-auto">
+          <button onClick={() => setIsChatOpen(!isChatOpen)} className="p-1.5 hover:bg-muted rounded-lg text-muted-foreground ml-auto transition-colors">
             {isChatOpen ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
           </button>
         </div>
@@ -212,10 +214,10 @@ const App: React.FC = () => {
               {chatMessages.map((msg, i) => (
                 <div key={i} className={cn("flex flex-col max-w-[90%]", msg.role === 'user' ? "ml-auto items-end" : "mr-auto items-start")}>
                   <div className={cn(
-                    "p-3 rounded-2xl text-sm shadow-sm",
+                    "p-3 rounded-2xl text-sm shadow-md",
                     msg.role === 'user'
-                      ? "bg-accent text-accent-foreground rounded-tr-none"
-                      : "bg-muted text-foreground rounded-tl-none border border-border"
+                      ? "bg-gradient-to-br from-accent to-teal-600 text-white rounded-tr-none"
+                      : "bg-card text-foreground rounded-tl-none border border-border/50"
                   )}>
                     {msg.text}
                   </div>
@@ -223,14 +225,14 @@ const App: React.FC = () => {
               ))}
               {/* Progress Bar in Chat */}
               {featureProgress > 0 && featureProgress < 100 && (
-                <div className="bg-muted p-3 rounded-lg border border-border">
-                  <div className="flex justify-between text-xs text-muted-foreground mb-1">
-                    <span>Building Pipeline...</span>
-                    <span>{featureProgress}%</span>
+                <div className="bg-card p-3 rounded-lg border border-border shadow-md">
+                  <div className="flex justify-between text-xs text-muted-foreground mb-2">
+                    <span className="font-medium">Building Pipeline...</span>
+                    <span className="font-semibold text-accent">{featureProgress}%</span>
                   </div>
-                  <div className="w-full bg-background h-2 rounded-full overflow-hidden">
+                  <div className="w-full bg-secondary h-2.5 rounded-full overflow-hidden shadow-inner">
                     <div
-                      className="bg-accent h-full transition-all duration-300"
+                      className="bg-gradient-to-r from-accent to-teal-600 h-full transition-all duration-300 shadow-sm"
                       style={{ width: `${featureProgress}%` }}
                     />
                   </div>
@@ -244,7 +246,7 @@ const App: React.FC = () => {
                 </div>
               )}
             </div>
-            <div className="p-4 border-t border-border bg-card">
+            <div className="p-4 border-t border-border bg-gradient-to-r from-card to-secondary/30">
               <div className="relative">
                 <input
                   type="text"
@@ -252,16 +254,16 @@ const App: React.FC = () => {
                   onChange={(e) => setInputMsg(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
                   placeholder={currentPage === 'features' ? "Instruct to build features..." : "Ask about the analysis..."}
-                  className="w-full bg-muted/50 border border-border rounded-full pl-4 pr-10 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-accent"
+                  className="w-full bg-card border border-border rounded-full pl-4 pr-10 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 shadow-sm transition-shadow focus:shadow-md"
                 />
                 <button
                   onClick={handleSendMessage}
-                  className="absolute right-1 top-1 p-1.5 bg-accent text-accent-foreground rounded-full hover:opacity-90 transition-opacity"
+                  className="absolute right-1.5 top-1.5 p-1.5 bg-gradient-to-br from-accent to-teal-600 text-white rounded-full hover:shadow-lg transition-all hover:scale-105 active:scale-95"
                 >
                   <Send size={14} />
                 </button>
               </div>
-              <p className="text-[10px] text-muted-foreground mt-2 text-center">
+              <p className="text-[10px] text-muted-foreground mt-2 text-center font-medium">
                 {currentPage === 'features' ? "AI Architect Mode: Builds pipeline from prompt." : "AI has context of current analysis."}
               </p>
             </div>
