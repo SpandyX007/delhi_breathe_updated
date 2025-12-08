@@ -32,6 +32,7 @@ export const fetchForecastData = async (params: {
     const queryParams = new URLSearchParams({
       start_date: params.fromDate,
       end_date: params.toDate,
+      granularity: params.granularity,
     });
 
     // Append sites individually

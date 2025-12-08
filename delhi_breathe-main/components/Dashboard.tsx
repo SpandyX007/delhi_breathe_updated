@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, CircleMarker, Popup } from 'react-leaflet';
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ReferenceLine
 } from 'recharts';
 import { SITES, MODELS, GRANULARITIES } from '../constants';
 import { fetchForecastData, fetchAnalysis } from '../services/api'; // UPDATED IMPORT
@@ -60,6 +60,31 @@ export const Dashboard: React.FC = () => {
   const [data, setData] = useState<any[]>([]);
   const [analysis, setAnalysis] = useState("Loading analysis...");
   const [loadingData, setLoadingData] = useState(false);
+  const [hoveredNO2, setHoveredNO2] = useState<any>(null);
+  const [hoveredO3, setHoveredO3] = useState<any>(null);
+
+  // Auto-Granularity Logic
+  const optimizeGranularity = (start: string, end: string) => {
+    const s = new Date(start);
+    const e = new Date(end);
+    const diffTime = Math.abs(e.getTime() - s.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays <= 2) return '1h';
+    if (diffDays <= 14) return '6h';
+    return '1d';
+  };
+
+  // Update granularity when dates change (User triggers)
+  const handleDateChange = (type: 'start' | 'end', val: string) => {
+    if (type === 'start') {
+      setFromDate(val);
+      setGranularity(optimizeGranularity(val, toDate));
+    } else {
+      setToDate(val);
+      setGranularity(optimizeGranularity(fromDate, val));
+    }
+  };
 
   // FETCH DATA EFFECT
   useEffect(() => {
@@ -151,9 +176,9 @@ export const Dashboard: React.FC = () => {
           <label className="text-[10px] uppercase font-bold text-muted-foreground">Range</label>
           <div className="flex items-center gap-2 bg-card border border-border rounded-lg p-2 shadow-sm hover:shadow transition-shadow">
             <Calendar size={14} className="text-accent ml-1" />
-            <input type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} className="bg-transparent text-sm w-24 outline-none" />
+            <input type="date" value={fromDate} onChange={(e) => handleDateChange('start', e.target.value)} className="bg-transparent text-sm w-24 outline-none" />
             <span className="text-muted-foreground">-</span>
-            <input type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} className="bg-transparent text-sm w-24 outline-none" />
+            <input type="date" value={toDate} onChange={(e) => handleDateChange('end', e.target.value)} className="bg-transparent text-sm w-24 outline-none" />
           </div>
         </div>
 
@@ -208,28 +233,37 @@ export const Dashboard: React.FC = () => {
           </h3>
           <span className="text-xs font-mono text-muted-foreground bg-secondary px-3 py-1.5 rounded-lg border border-border/50 shadow-sm">Model: {MODELS.find(m => m.id === selectedModels[0])?.name}</span>
         </div>
-        <div className="h-[300px] w-full">
+        <div className="h-[450px] w-full">
           {loadingData ? (
             <div className="w-full h-full flex items-center justify-center text-muted-foreground">Loading Data...</div>
           ) : (
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={data}>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" opacity={0.3} vertical={false} />
+              <LineChart
+                data={data}
+                onMouseMove={(e) => {
+                  if (e.activePayload) setHoveredNO2(e.activePayload[0].payload);
+                }}
+                onMouseLeave={() => setHoveredNO2(null)}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" opacity={0.4} vertical={true} horizontal={true} />
                 <XAxis
                   dataKey="time"
                   tickFormatter={(t) => new Date(t).toLocaleDateString()}
                   stroke="var(--muted-foreground)"
                   fontSize={10}
-                  tickLine={false}
                 />
-                <YAxis stroke="var(--muted-foreground)" fontSize={10} tickLine={false} axisLine={false} />
+                <YAxis stroke="var(--muted-foreground)" fontSize={10} />
                 <Tooltip
                   contentStyle={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
                   itemStyle={{ fontSize: '12px' }}
                   labelStyle={{ fontSize: '10px', color: 'var(--muted-foreground)', marginBottom: '4px' }}
+                  cursor={{ stroke: 'var(--muted-foreground)', strokeWidth: 1, strokeDasharray: '4 4' }}
                 />
                 <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
-                <Line type="monotone" dataKey="NO2" name="Actual (Avg)" stroke="#64748b" strokeWidth={1} dot={false} strokeDasharray="5 5" />
+                {hoveredNO2 && (
+                  <ReferenceLine y={hoveredNO2.NO2} stroke="#ef4444" strokeDasharray="3 3" opacity={0.5} />
+                )}
+                <Line type="monotone" dataKey="NO2" name="Actual (Avg)" stroke="#ef4444" strokeWidth={1} dot={false} strokeDasharray="5 5" />
                 <Line type="monotone" dataKey="predicted_NO2" name="Predicted (Avg)" stroke="#3b82f6" strokeWidth={2} dot={false} activeDot={{ r: 6 }} />
               </LineChart>
             </ResponsiveContainer>
@@ -246,27 +280,36 @@ export const Dashboard: React.FC = () => {
           </h3>
           <span className="text-xs font-mono text-muted-foreground bg-secondary px-3 py-1.5 rounded-lg border border-border/50 shadow-sm">Model: {MODELS.find(m => m.id === selectedModels[0])?.name}</span>
         </div>
-        <div className="h-[300px] w-full">
+        <div className="h-[450px] w-full">
           {loadingData ? (
             <div className="w-full h-full flex items-center justify-center text-muted-foreground">Loading Data...</div>
           ) : (
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={data}>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" opacity={0.3} vertical={false} />
+              <LineChart
+                data={data}
+                onMouseMove={(e) => {
+                  if (e.activePayload) setHoveredO3(e.activePayload[0].payload);
+                }}
+                onMouseLeave={() => setHoveredO3(null)}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" opacity={0.4} vertical={true} horizontal={true} />
                 <XAxis
                   dataKey="time"
                   tickFormatter={(t) => new Date(t).toLocaleDateString()}
                   stroke="var(--muted-foreground)"
                   fontSize={10}
-                  tickLine={false}
                 />
-                <YAxis stroke="var(--muted-foreground)" fontSize={10} tickLine={false} axisLine={false} />
+                <YAxis stroke="var(--muted-foreground)" fontSize={10} />
                 <Tooltip
                   contentStyle={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)', borderRadius: '8px' }}
                   itemStyle={{ fontSize: '12px' }}
+                  cursor={{ stroke: 'var(--muted-foreground)', strokeWidth: 1, strokeDasharray: '4 4' }}
                 />
                 <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
-                <Line type="monotone" dataKey="O3" name="Actual (Avg)" stroke="#64748b" strokeWidth={1} dot={false} strokeDasharray="5 5" />
+                {hoveredO3 && (
+                  <ReferenceLine y={hoveredO3.O3} stroke="#ef4444" strokeDasharray="3 3" opacity={0.5} />
+                )}
+                <Line type="monotone" dataKey="O3" name="Actual (Avg)" stroke="#ef4444" strokeWidth={1} dot={false} strokeDasharray="5 5" />
                 <Line type="monotone" dataKey="predicted_O3" name="Predicted (Avg)" stroke="#10b981" strokeWidth={2} dot={false} activeDot={{ r: 6 }} />
               </LineChart>
             </ResponsiveContainer>

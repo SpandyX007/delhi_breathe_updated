@@ -19,7 +19,8 @@ UNSEEN_DIR = os.path.join(BASE_DIR, "unseen_predictions")
 async def get_forecast_data(
     start_date: str = Query(..., description="Start date in YYYY-MM-DD format"),
     end_date: str = Query(..., description="End date in YYYY-MM-DD format"),
-    sites: List[int] = Query(..., description="List of site IDs to fetch data for")
+    sites: List[int] = Query(..., description="List of site IDs to fetch data for"),
+    granularity: str = Query("1h", description="Data granularity (1h, 6h, 1d, 1w, 1m)")
 ):
     try:
         # Validate dates
@@ -52,7 +53,7 @@ async def get_forecast_data(
                     print(f"Error reading actuals for site {site_id}: {e}")
 
             # 2. Read Predictions (Unseen)
-            unseen_path = os.path.join(UNSEEN_DIR, f"site_{site_id}.csv")
+            unseen_path = os.path.join(UNSEEN_DIR, f"site_{site_id}_full_predictions.csv")
             pred_lf = None
             
             if os.path.exists(unseen_path):
@@ -111,8 +112,19 @@ async def get_forecast_data(
         if combined_df.is_empty():
             return []
 
+        # Sort by time for group_by_dynamic
+        combined_df = combined_df.sort("time")
+
         # Group by Time and Calculate Mean (aggregate across sites)
-        aggregated_df = combined_df.group_by("time").mean().sort("time")
+        if granularity not in ['1h', '6h', '1d', '1w', '1m']:
+            granularity = '1h'
+            
+        aggregated_df = combined_df.group_by_dynamic("time", every=granularity).agg([
+            pl.col("NO2").mean(), 
+            pl.col("O3").mean(), 
+            pl.col("predicted_NO2").mean(), 
+            pl.col("predicted_O3").mean()
+        ]).sort("time")
         
         # Convert to list of dictionaries
         result = aggregated_df.to_dicts()
