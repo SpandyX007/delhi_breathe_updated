@@ -9,8 +9,8 @@ export const Models: React.FC = () => {
   return (
     <div className="flex flex-col gap-8 pb-10">
       <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-bold">Model Zoo</h2>
-        <button className="bg-primary text-primary-foreground px-4 py-2 rounded text-sm font-medium hover:opacity-90">
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-foreground via-accent to-blue-600 bg-clip-text text-transparent">Model Zoo</h2>
+        <button className="bg-gradient-to-r from-accent via-blue-500 to-accent text-white px-4 py-2 rounded-lg text-sm font-medium hover:shadow-lg hover:shadow-accent/30 transition-all hover:scale-105 active:scale-95 ring-2 ring-accent/20">
           Compare All
         </button>
       </div>
@@ -20,20 +20,21 @@ export const Models: React.FC = () => {
           <div
             key={model.id}
             onClick={() => setSelectedModel(model)}
-            className="group bg-card border border-border rounded-xl p-5 hover:border-accent hover:shadow-lg transition-all cursor-pointer relative overflow-hidden"
+            className="group bg-gradient-to-br from-card via-card to-accent/5 border border-border/70 rounded-xl p-5 hover:border-accent/50 hover:shadow-2xl hover:shadow-accent/10 transition-all cursor-pointer relative overflow-hidden backdrop-blur-sm"
           >
-            <div className="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-100 transition-opacity">
-              <Play size={40} className="text-accent" />
+            <div className="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <Play size={40} className="text-accent drop-shadow-lg" />
             </div>
-            <div className="mb-4">
-              <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">
+            <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+            <div className="mb-4 relative z-10">
+              <span className="text-[10px] uppercase font-bold text-accent tracking-wider bg-accent/10 px-2 py-1 rounded">
                 {model.type}
               </span>
-              <h3 className="text-xl font-bold mt-1 group-hover:text-accent transition-colors">
+              <h3 className="text-xl font-bold mt-2 group-hover:text-accent transition-colors">
                 {model.name}
               </h3>
             </div>
-            <div className="grid grid-cols-2 gap-4 mt-6">
+            <div className="grid grid-cols-2 gap-4 mt-6 relative z-10">
               <div>
                 <div className="text-xs text-muted-foreground">RMSE</div>
                 <div className="text-lg font-mono font-bold">{model.rmse}</div>
@@ -50,23 +51,25 @@ export const Models: React.FC = () => {
       </div>
 
       {/* Model Request / Builder Section */}
-      <div className="mt-10 bg-card border border-border rounded-xl p-8 shadow-inner">
+      <div className="mt-10 bg-gradient-to-br from-card via-accent/5 to-card border border-border/70 rounded-xl p-8 shadow-2xl backdrop-blur-sm">
         <div className="flex items-center gap-3 mb-6">
-          <Terminal size={24} className="text-accent" />
-          <h3 className="text-2xl font-bold">Request Custom GBM Model</h3>
+          <div className="p-2 bg-gradient-to-br from-accent via-blue-500 to-accent/80 rounded-lg shadow-lg shadow-accent/30">
+            <Terminal size={24} className="text-white" />
+          </div>
+          <h3 className="text-2xl font-bold bg-gradient-to-r from-foreground via-accent to-blue-600 bg-clip-text text-transparent">Request Custom GBM Model</h3>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="space-y-4">
             <label className="block text-sm font-medium">Architecture</label>
-            <select className="w-full bg-muted border border-input rounded p-2 text-sm focus:ring-1 focus:ring-accent outline-none">
+            <select className="w-full bg-card border border-input rounded-lg p-2 text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all shadow-sm hover:shadow-md">
               <option>Gradient Boosting Machine (GBM)</option>
               <option>XGBoost (DART)</option>
               <option>LightGBM (GOSS)</option>
             </select>
 
             <label className="block text-sm font-medium">Loss Function</label>
-            <select className="w-full bg-muted border border-input rounded p-2 text-sm focus:ring-1 focus:ring-accent outline-none">
+            <select className="w-full bg-card border border-input rounded-lg p-2 text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all shadow-sm hover:shadow-md">
               <option>RMSE</option>
               <option>Huber Loss</option>
               <option>Quantile</option>

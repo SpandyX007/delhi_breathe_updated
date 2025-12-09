@@ -2,3 +2,8 @@ fastapi
 uvicorn
 polars
 python-multipart
+numpy
+matplotlib
+seaborn
+scikit-learn
+scipy

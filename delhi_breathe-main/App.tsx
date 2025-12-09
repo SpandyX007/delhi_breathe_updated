@@ -104,13 +104,16 @@ const App: React.FC = () => {
     <button
       onClick={() => setCurrentPage(page)}
       className={cn(
-        "flex items-center w-full p-3 mb-1.5 rounded-lg transition-all duration-200",
-        "hover:bg-accent/10 hover:text-accent",
-        currentPage === page ? "bg-accent/15 text-accent font-semibold shadow-sm" : "text-muted-foreground hover:shadow-sm"
+        "flex items-center w-full p-3 mb-1.5 rounded-lg transition-all duration-200 relative overflow-hidden group",
+        "hover:bg-gradient-to-r hover:from-accent/10 hover:to-accent/5 hover:text-accent",
+        currentPage === page 
+          ? "bg-gradient-to-r from-accent/15 to-accent/5 text-accent font-semibold shadow-md shadow-accent/10 border border-accent/20" 
+          : "text-muted-foreground hover:shadow-sm"
       )}
     >
-      <Icon size={20} />
-      {isSidebarOpen && <span className="ml-3 text-sm font-medium">{label}</span>}
+      <Icon size={20} className="relative z-10" />
+      {isSidebarOpen && <span className="ml-3 text-sm font-medium relative z-10">{label}</span>}
+      {currentPage === page && <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent opacity-50" />}
     </button>
   );
 
@@ -123,14 +126,14 @@ const App: React.FC = () => {
           isFullScreen ? "w-0 border-none overflow-hidden" : (isSidebarOpen ? "w-64" : "w-16")
         )}
       >
-        <div className="flex items-center justify-between p-4 border-b border-border h-16 bg-gradient-to-r from-card to-secondary/30">
+        <div className="flex items-center justify-between p-4 border-b border-border h-16 bg-gradient-to-r from-card via-accent/5 to-card backdrop-blur-xl">
           <div className="flex items-center gap-2 overflow-hidden">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-accent to-teal-600 shrink-0 shadow-lg flex items-center justify-center text-white font-bold text-xs">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-accent via-blue-500 to-accent/80 shrink-0 shadow-lg shadow-accent/20 flex items-center justify-center text-white font-bold text-xs ring-2 ring-accent/20">
               AA
             </div>
-            {isSidebarOpen && <h1 className="font-bold text-lg tracking-tight truncate bg-gradient-to-r from-foreground to-accent bg-clip-text text-transparent">AeroAnalytica</h1>}
+            {isSidebarOpen && <h1 className="font-bold text-lg tracking-tight truncate bg-gradient-to-r from-foreground via-accent to-blue-600 bg-clip-text text-transparent">AeroAnalytica</h1>}
           </div>
-          <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-1.5 hover:bg-muted rounded-lg text-muted-foreground transition-colors">
+          <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-1.5 hover:bg-accent/10 rounded-lg text-muted-foreground hover:text-accent transition-all duration-200">
             {isSidebarOpen ? <ChevronLeft size={16} /> : <Menu size={16} />}
           </button>
         </div>
@@ -141,22 +144,22 @@ const App: React.FC = () => {
           <SidebarItem page="features" icon={Cpu} label="Features" />
           <SidebarItem page="models" icon={BrainCircuit} label="Models" />
           <SidebarItem page="policy" icon={Scale} label="Policy" />
-          <SidebarItem page="settings" icon={Settings} label="Settings" />
+          {/* <SidebarItem page="settings" icon={Settings} label="Settings" /> */}
         </nav>
 
-        <div className="p-4 border-t border-border bg-gradient-to-r from-card to-secondary/30">
+        <div className="p-4 border-t border-border bg-gradient-to-r from-card via-accent/5 to-card backdrop-blur-xl">
           <button
             onClick={toggleTheme}
-            className="flex items-center justify-center w-full p-2.5 rounded-lg hover:bg-accent/10 hover:text-accent text-muted-foreground transition-all shadow-sm hover:shadow"
+            className="flex items-center justify-center w-full p-2.5 rounded-lg hover:bg-gradient-to-r hover:from-accent/15 hover:to-accent/5 hover:text-accent text-muted-foreground transition-all shadow-sm hover:shadow-md group"
           >
-            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+            {theme === 'dark' ? <Sun size={20} className="group-hover:rotate-180 transition-transform duration-500" /> : <Moon size={20} className="group-hover:rotate-12 transition-transform duration-300" />}
             {isSidebarOpen && <span className="ml-2 text-sm font-medium">{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>}
           </button>
         </div>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto bg-background/50 relative flex flex-col">
+      <main className="flex-1 overflow-auto bg-gradient-to-br from-background via-background to-accent/5 relative flex flex-col">
         <div className="h-full w-full flex-1">
           {currentPage === 'dashboard' && <div className="p-4 sm:p-6 lg:p-8"><Dashboard /></div>}
           {currentPage === 'research' && <div className="p-4 sm:p-6 lg:p-8"><Research /></div>}
@@ -194,16 +197,16 @@ const App: React.FC = () => {
           isFullScreen ? "w-0 border-none overflow-hidden" : (isChatOpen ? "w-80" : "w-12")
         )}
       >
-        <div className="flex items-center justify-between p-4 border-b border-border h-16 bg-gradient-to-r from-card to-secondary/30">
+        <div className="flex items-center justify-between p-4 border-b border-border h-16 bg-gradient-to-r from-card via-accent/5 to-card backdrop-blur-xl">
           {isChatOpen && (
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-accent to-teal-600 flex items-center justify-center shadow-sm">
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-accent via-blue-500 to-accent/80 flex items-center justify-center shadow-lg shadow-accent/20 ring-2 ring-accent/20">
                 <Bot size={16} className="text-white" />
               </div>
-              <span className="font-semibold text-sm">Gemini Assistant</span>
+              <span className="font-semibold text-sm bg-gradient-to-r from-foreground to-accent bg-clip-text text-transparent">Builder</span>
             </div>
           )}
-          <button onClick={() => setIsChatOpen(!isChatOpen)} className="p-1.5 hover:bg-muted rounded-lg text-muted-foreground ml-auto transition-colors">
+          <button onClick={() => setIsChatOpen(!isChatOpen)} className="p-1.5 hover:bg-accent/10 rounded-lg text-muted-foreground hover:text-accent ml-auto transition-all duration-200">
             {isChatOpen ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
           </button>
         </div>
@@ -214,10 +217,10 @@ const App: React.FC = () => {
               {chatMessages.map((msg, i) => (
                 <div key={i} className={cn("flex flex-col max-w-[90%]", msg.role === 'user' ? "ml-auto items-end" : "mr-auto items-start")}>
                   <div className={cn(
-                    "p-3 rounded-2xl text-sm shadow-md",
+                    "p-3 rounded-2xl text-sm shadow-lg backdrop-blur-sm",
                     msg.role === 'user'
-                      ? "bg-gradient-to-br from-accent to-teal-600 text-white rounded-tr-none"
-                      : "bg-card text-foreground rounded-tl-none border border-border/50"
+                      ? "bg-gradient-to-br from-accent via-blue-500 to-accent/90 text-white rounded-tr-none shadow-accent/20 ring-1 ring-white/20"
+                      : "bg-gradient-to-br from-card to-card/80 text-foreground rounded-tl-none border border-border/50 shadow-black/5"
                   )}>
                     {msg.text}
                   </div>
@@ -232,9 +235,11 @@ const App: React.FC = () => {
                   </div>
                   <div className="w-full bg-secondary h-2.5 rounded-full overflow-hidden shadow-inner">
                     <div
-                      className="bg-gradient-to-r from-accent to-teal-600 h-full transition-all duration-300 shadow-sm"
+                      className="bg-gradient-to-r from-accent via-blue-500 to-accent h-full transition-all duration-300 shadow-lg relative"
                       style={{ width: `${featureProgress}%` }}
-                    />
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse" />
+                    </div>
                   </div>
                 </div>
               )}
@@ -246,7 +251,7 @@ const App: React.FC = () => {
                 </div>
               )}
             </div>
-            <div className="p-4 border-t border-border bg-gradient-to-r from-card to-secondary/30">
+            <div className="p-4 border-t border-border bg-gradient-to-r from-card via-accent/5 to-card backdrop-blur-xl">
               <div className="relative">
                 <input
                   type="text"
@@ -254,11 +259,11 @@ const App: React.FC = () => {
                   onChange={(e) => setInputMsg(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
                   placeholder={currentPage === 'features' ? "Instruct to build features..." : "Ask about the analysis..."}
-                  className="w-full bg-card border border-border rounded-full pl-4 pr-10 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 shadow-sm transition-shadow focus:shadow-md"
+                  className="w-full bg-card border border-border rounded-full pl-4 pr-10 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 shadow-sm transition-all focus:shadow-lg focus:border-accent/50"
                 />
                 <button
                   onClick={handleSendMessage}
-                  className="absolute right-1.5 top-1.5 p-1.5 bg-gradient-to-br from-accent to-teal-600 text-white rounded-full hover:shadow-lg transition-all hover:scale-105 active:scale-95"
+                  className="absolute right-1.5 top-1.5 p-1.5 bg-gradient-to-br from-accent via-blue-500 to-accent/90 text-white rounded-full hover:shadow-lg hover:shadow-accent/30 transition-all hover:scale-105 active:scale-95"
                 >
                   <Send size={14} />
                 </button>

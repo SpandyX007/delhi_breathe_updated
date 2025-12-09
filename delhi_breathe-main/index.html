@@ -45,73 +45,83 @@
     </script>
     <style>
       :root {
-        --background: 210 20% 98%;
-        --foreground: 215 25% 15%;
+        --background: 220 26% 96%;
+        --foreground: 220 20% 12%;
         --card: 0 0% 100%;
-        --card-foreground: 215 25% 15%;
+        --card-foreground: 220 20% 12%;
         --popover: 0 0% 100%;
-        --popover-foreground: 215 25% 15%;
-        --primary: 215 28% 17%;
-        --primary-foreground: 0 0% 98%;
-        --secondary: 210 17% 95%;
-        --secondary-foreground: 215 25% 17%;
-        --muted: 210 17% 95%;
-        --muted-foreground: 215 16% 47%;
-        --accent: 175 60% 45%;
+        --popover-foreground: 220 20% 12%;
+        --primary: 220 65% 18%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 220 15% 92%;
+        --secondary-foreground: 220 20% 12%;
+        --muted: 220 15% 92%;
+        --muted-foreground: 220 12% 50%;
+        --accent: 188 94% 42%;
         --accent-foreground: 0 0% 100%;
-        --destructive: 0 72% 51%;
+        --destructive: 0 84% 60%;
         --destructive-foreground: 0 0% 100%;
-        --border: 215 20% 88%;
-        --input: 215 20% 88%;
-        --ring: 175 60% 45%;
+        --border: 220 15% 88%;
+        --input: 220 15% 88%;
+        --ring: 188 94% 42%;
         --radius: 0.75rem;
-        --success: 142 71% 45%;
+        --success: 142 76% 36%;
         --warning: 38 92% 50%;
         --info: 199 89% 48%;
       }
       .dark {
-        --background: 222 47% 11%;
+        --background: 222 47% 7%;
         --foreground: 210 40% 98%;
-        --card: 222 47% 14%;
+        --card: 222 40% 11%;
         --card-foreground: 210 40% 98%;
-        --popover: 222 47% 14%;
+        --popover: 222 40% 11%;
         --popover-foreground: 210 40% 98%;
         --primary: 210 40% 98%;
-        --primary-foreground: 222 47% 11%;
-        --secondary: 217 32% 17%;
+        --primary-foreground: 222 47% 7%;
+        --secondary: 222 35% 14%;
         --secondary-foreground: 210 40% 98%;
-        --muted: 217 32% 17%;
-        --muted-foreground: 215 20% 65%;
-        --accent: 175 60% 45%;
+        --muted: 222 35% 14%;
+        --muted-foreground: 220 15% 65%;
+        --accent: 188 94% 42%;
         --accent-foreground: 0 0% 100%;
-        --destructive: 0 63% 31%;
+        --destructive: 0 72% 51%;
         --destructive-foreground: 210 40% 98%;
-        --border: 217 32% 17%;
-        --input: 217 32% 17%;
-        --ring: 175 60% 45%;
-        --success: 142 71% 45%;
+        --border: 222 35% 16%;
+        --input: 222 35% 16%;
+        --ring: 188 94% 42%;
+        --success: 142 76% 36%;
         --warning: 38 92% 50%;
         --info: 199 89% 48%;
       }
       body {
-        font-family: 'Inter', sans-serif;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       }
       /* Custom Scrollbar for "Trading Terminal" feel */
       ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
+        width: 10px;
+        height: 10px;
       }
       ::-webkit-scrollbar-track {
-        background: transparent;
+        background: hsl(var(--background));
+        border-radius: 5px;
       }
       ::-webkit-scrollbar-thumb {
-        background: hsl(var(--border));
-        border-radius: 4px;
+        background: linear-gradient(180deg, hsl(var(--accent)) 0%, hsl(188 94% 30%) 100%);
+        border-radius: 5px;
+        border: 2px solid hsl(var(--background));
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: hsl(var(--accent));
+        background: linear-gradient(180deg, hsl(188 94% 50%) 0%, hsl(188 94% 35%) 100%);
+      }
+      /* Loading animation */
+      @keyframes shimmer {
+        0% { background-position: -1000px 0; }
+        100% { background-position: 1000px 0; }
       }
     </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script type="importmap">
 {
   "imports": {

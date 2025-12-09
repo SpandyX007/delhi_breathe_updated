@@ -176,7 +176,7 @@ export const Policy: React.FC = () => {
     <div className="flex flex-col gap-8 pb-10">
       {/* Header */}
       <div>
-        <h2 className="text-3xl font-bold tracking-tight">
+        <h2 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-foreground via-accent to-blue-600 bg-clip-text text-transparent">
           Policy & Health Impact Analysis
         </h2>
         <p className="text-muted-foreground mt-2">
@@ -187,14 +187,14 @@ export const Policy: React.FC = () => {
 
       {/* Key Insights with Evidence */}
       <div className="space-y-4">
-        <h3 className="text-2xl font-bold">Key Insights & Evidence</h3>
+        <h3 className="text-2xl font-bold bg-gradient-to-r from-foreground to-accent bg-clip-text text-transparent">Key Insights & Evidence</h3>
         <div className="space-y-3">
           {insights.map((insight, idx) => {
             const Icon = insight.icon;
             return (
               <div
                 key={idx}
-                className="bg-card border border-border rounded-xl overflow-hidden hover:border-accent transition-all cursor-pointer"
+                className="bg-gradient-to-br from-card via-card to-accent/5 border border-border/70 rounded-xl overflow-hidden hover:border-accent/50 hover:shadow-xl transition-all cursor-pointer backdrop-blur-sm"
                 onClick={() =>
                   setExpandedInsight(expandedInsight === idx ? null : idx)
                 }

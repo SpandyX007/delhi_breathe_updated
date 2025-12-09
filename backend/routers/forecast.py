@@ -12,8 +12,10 @@ router = APIRouter()
 # -> ../../../Data_SIH_2025
 # BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../"))
 BASE_DIR = os.path.abspath(r"D:\SIH2K25\ISRO_UI\delhi_breathe-main")
-DATA_DIR = os.path.join(BASE_DIR, "Data_SIH_2025")
-UNSEEN_DIR = os.path.join(BASE_DIR, "unseen_predictions")
+# Actual data (ground truth) from unseen_output_blh
+ACTUAL_DIR = os.path.join(BASE_DIR, "predictions", "unseen_output_blh", "unseen_output_blh")
+# Predicted data from air_quality_predictions_final_v1
+PREDICTED_DIR = os.path.join(BASE_DIR, "predictions", "air_quality_predictions_final_v1", "unseen_filled")
 
 @router.get("/forecast")
 async def get_forecast_data(
@@ -30,13 +32,13 @@ async def get_forecast_data(
         data_frames = []
 
         for site_id in sites:
-            # 1. Read Actuals (Training Data)
-            train_path = os.path.join(DATA_DIR, f"site_{site_id}_train_data.csv")
+            # 1. Read Actuals (Ground Truth from unseen_output_blh)
+            actual_path = os.path.join(ACTUAL_DIR, f"site_{site_id}_unseen_output.csv")
             actual_lf = None
             
-            if os.path.exists(train_path):
+            if os.path.exists(actual_path):
                 try:
-                    actual_lf = pl.scan_csv(train_path).with_columns([
+                    actual_lf = pl.scan_csv(actual_path).with_columns([
                         pl.datetime(
                             pl.col("year").cast(pl.Int32),
                             pl.col("month").cast(pl.Int32),
@@ -52,13 +54,13 @@ async def get_forecast_data(
                 except Exception as e:
                     print(f"Error reading actuals for site {site_id}: {e}")
 
-            # 2. Read Predictions (Unseen)
-            unseen_path = os.path.join(UNSEEN_DIR, f"site_{site_id}_full_predictions.csv")
+            # 2. Read Predictions (from air_quality_predictions_final_v1)
+            pred_path = os.path.join(PREDICTED_DIR, f"site_{site_id}_unseen_filled.csv")
             pred_lf = None
             
-            if os.path.exists(unseen_path):
+            if os.path.exists(pred_path):
                 try:
-                    pred_lf = pl.scan_csv(unseen_path).with_columns([
+                    pred_lf = pl.scan_csv(pred_path).with_columns([
                         pl.datetime(
                             pl.col("year").cast(pl.Int32),
                             pl.col("month").cast(pl.Int32),
@@ -68,8 +70,8 @@ async def get_forecast_data(
                         ).alias("time")
                     ]).select([
                         pl.col("time"),
-                        pl.col("NO2_predicted").alias("predicted_NO2"),
-                        pl.col("O3_predicted").alias("predicted_O3")
+                        pl.col("NO2_target").alias("predicted_NO2"),
+                        pl.col("O3_target").alias("predicted_O3")
                     ])
                 except Exception as e:
                     print(f"Error reading predictions for site {site_id}: {e}")

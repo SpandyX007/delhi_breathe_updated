@@ -22,46 +22,46 @@ function cn(...inputs: ClassValue[]) {
 
 const NODE_VISUALS: Record<NodeType, { color: string, icon: React.ReactNode, border: string, bg: string }> = {
   source: {
-    color: 'text-sky-600',
+    color: 'text-cyan-600',
     icon: <Database size={16} />,
-    border: 'border-sky-500/50',
-    bg: 'bg-sky-500/10'
+    border: 'border-cyan-500/60',
+    bg: 'bg-gradient-to-br from-cyan-500/20 to-cyan-600/10'
   },
   cleaning: {
     color: 'text-teal-600',
     icon: <Eraser size={16} />,
-    border: 'border-teal-500/50',
-    bg: 'bg-teal-500/10'
+    border: 'border-teal-500/60',
+    bg: 'bg-gradient-to-br from-teal-500/20 to-teal-600/10'
   },
   transform: {
     color: 'text-amber-600',
     icon: <FunctionSquare size={16} />,
-    border: 'border-amber-500/50',
-    bg: 'bg-amber-500/10'
+    border: 'border-amber-500/60',
+    bg: 'bg-gradient-to-br from-amber-500/20 to-amber-600/10'
   },
   temporal: {
     color: 'text-orange-600',
     icon: <Clock size={16} />,
-    border: 'border-orange-500/50',
-    bg: 'bg-orange-500/10'
+    border: 'border-orange-500/60',
+    bg: 'bg-gradient-to-br from-orange-500/20 to-orange-600/10'
   },
   aggregation: {
     color: 'text-rose-600',
     icon: <Layers size={16} />,
-    border: 'border-rose-500/50',
-    bg: 'bg-rose-500/10'
+    border: 'border-rose-500/60',
+    bg: 'bg-gradient-to-br from-rose-500/20 to-rose-600/10'
   },
   model: {
     color: 'text-blue-600',
     icon: <Cpu size={16} />,
-    border: 'border-blue-500/50',
-    bg: 'bg-blue-500/10'
+    border: 'border-blue-500/60',
+    bg: 'bg-gradient-to-br from-blue-500/20 to-blue-600/10'
   },
   output: {
     color: 'text-emerald-600',
     icon: <Target size={16} />,
-    border: 'border-emerald-500/50',
-    bg: 'bg-emerald-500/10'
+    border: 'border-emerald-500/60',
+    bg: 'bg-gradient-to-br from-emerald-500/20 to-emerald-600/10'
   },
 };
 

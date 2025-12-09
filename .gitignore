@@ -1,4 +1,9 @@
-Data_SIH_2025/
 externaldata/
 unseen_predictions/
 .env
+site_predictions_full/
+modelAnalyser/
+.myapp/
+comparison_plots/
+temp/
+.gitignore

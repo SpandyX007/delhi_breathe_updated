@@ -66,9 +66,9 @@ export const Research: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-8 h-full">
-      <div className="flex justify-between items-end border-b border-border pb-4">
+      <div className="flex justify-between items-end border-b border-border/70 pb-4">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight">
+          <h2 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-foreground via-accent to-blue-600 bg-clip-text text-transparent">
             Model Interpretability
           </h2>
           <p className="text-muted-foreground mt-1">
@@ -87,7 +87,7 @@ export const Research: React.FC = () => {
             onChange={(e) =>
               setGraphType(e.target.value as "bar" | "line" | "radar")
             }
-            className="bg-muted/30 border border-input rounded text-sm p-2 focus:ring-1 focus:ring-accent outline-none"
+            className="bg-card border border-input rounded-lg text-sm p-2 focus:ring-2 focus:ring-accent focus:border-accent/50 outline-none shadow-sm hover:shadow-md transition-all"
           >
             <option value="bar">Horizontal Bar</option>
             <option value="line">Line Chart</option>
@@ -98,8 +98,8 @@ export const Research: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* NO2 Model Features */}
-        <div className="bg-card rounded-xl border border-border shadow-sm p-6">
-          <h3 className="font-semibold mb-6 text-lg border-b border-border pb-3">
+        <div className="bg-gradient-to-br from-card via-card to-accent/5 rounded-xl border border-border/70 shadow-xl hover:shadow-2xl transition-all p-6 backdrop-blur-sm">
+          <h3 className="font-semibold mb-6 text-lg border-b border-border/70 pb-3 bg-gradient-to-r from-foreground to-accent bg-clip-text text-transparent">
             NO2 Model - Feature Importance
           </h3>
           <ResponsiveContainer width="100%" height={350}>
