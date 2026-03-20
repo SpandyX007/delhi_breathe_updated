@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-AeroAnalytica (Delhi Breathe) is a full-stack web application designed for environmental monitoring and forecasting, originally developed in conjunction with the Smart India Hackathon (SIH) 2025. The platform aims to visualize, analyze, and forecast air quality metrics and environmental features, providing users with actionable insights. 
+Delhi Breathe is a full-stack web application designed for environmental monitoring and forecasting, originally developed in conjunction with the Smart India Hackathon (SIH) 2025. The platform aims to visualize, analyze, and forecast air quality metrics and environmental features, providing users with actionable insights. 
 
 ## Repository Structure
 
