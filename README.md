@@ -1,4 +1,4 @@
-# AeroAnalytica - Delhi Breathe
+# Delhi Breathe
 
 ## Project Overview
 
