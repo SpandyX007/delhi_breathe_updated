@@ -10,8 +10,8 @@ router = APIRouter()
 # Adjusting to robustness - assuming standard layout
 # d:\SIH2K25\ISRO_UI\delhi_breathe-main\backend\routers\forecast.py
 # -> ../../../Data_SIH_2025
-# BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../"))
-BASE_DIR = os.path.abspath(r"D:\SIH2K25\ISRO_UI\delhi_breathe-main")
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../"))
+# BASE_DIR = os.path.abspath(r"D:\SIH2K25\ISRO_UI\delhi_breathe-main")
 # Actual data (ground truth) from unseen_output_blh
 ACTUAL_DIR = os.path.join(BASE_DIR, "predictions", "unseen_output_blh", "unseen_output_blh")
 # Predicted data from air_quality_predictions_final_v1
