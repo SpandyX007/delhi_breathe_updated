@@ -38,7 +38,8 @@ export const fetchForecastData = async (params: {
     // Append sites individually
     params.sites.forEach(id => queryParams.append('sites', id.toString()));
 
-    const response = await fetch(`http://127.0.0.1:8000/api/v1/forecast?${queryParams.toString()}`);
+    // const response = await fetch(`http://127.0.0.1:8000/api/v1/forecast?${queryParams.toString()}`);
+    const response = await fetch(`https://delhi-breathe-updated.vercel.app/api/v1/forecast?${queryParams.toString()}`);
 
     if (!response.ok) {
       throw new Error(`API Error: ${response.statusText}`);
